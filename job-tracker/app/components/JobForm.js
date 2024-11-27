@@ -50,16 +50,6 @@ const JobForm = ({ onSubmit }) => {
     setCv(null);
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // You can implement logic here to upload to a server or storage and get the URL
-      const fileUrl = URL.createObjectURL(file); // Create a temporary URL for the uploaded file
-      setCv(file);
-      setCvUrl(fileUrl); // Save the file URL
-    }
-  };
-
   return (
     <div className="p-4">
       <form onSubmit={handleSubmit} className="space-y-4 p-4 max-w-lg">
@@ -78,7 +68,7 @@ const JobForm = ({ onSubmit }) => {
           className="w-full p-2 border border-gray-300 rounded  text-black"
         />
         <input
-          type="url"
+          type="text"
           placeholder="Company Website URL"
           value={companyLink}
           onChange={(e) => setCompanyLink(e.target.value)}

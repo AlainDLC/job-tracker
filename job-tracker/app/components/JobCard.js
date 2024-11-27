@@ -11,6 +11,9 @@ const JobCard = ({ job, onMoveJob }) => {
     link.click();
     document.body.removeChild(link);
   };
+  const formattedDate = job.interview_date
+    ? new Date(job.interview_date).toLocaleDateString()
+    : null; // Format the interview date if it exists
 
   return (
     <div className="border border-gray-300 rounded-lg p-4 shadow-md bg-white text-black">
@@ -37,7 +40,11 @@ const JobCard = ({ job, onMoveJob }) => {
       <p>
         <strong>Application Date:</strong> {job.application_date}
       </p>
-
+      {formattedDate && (
+        <div className="mt-2">
+          <strong>Interview Date:</strong> {formattedDate}
+        </div>
+      )}
       <p>
         {job.cv ? (
           <div>
