@@ -1,78 +1,42 @@
-"use client";
-import React from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+// components/ProcessTracker.js
 import JobCard from "./JobCard";
 
 const ProcessTracker = ({ stages, jobs, setJobs }) => {
-  // Handles the drag-and-drop logic
-  const handleOnDragEnd = (result) => {
-    const { destination, source } = result;
-    if (!destination) return;
-
-    const jobId = result.draggableId;
-    const newStage = destination.droppableId; // New stage after dragging
-
-    // Update job's stage in the state
-    setJobs((prevJobs) =>
-      prevJobs.map((job) =>
-        job.id === parseInt(jobId) ? { ...job, stage: newStage } : job
-      )
-    );
-  };
-
-  // Function to handle stage change when moving a job manually
   const handleMoveJob = (jobId, newStage) => {
-    setJobs((prevJobs) =>
-      prevJobs.map((job) =>
-        job.id === jobId ? { ...job, stage: newStage } : job
-      )
+    const updatedJobs = jobs.map((job) =>
+      job.id === jobId ? { ...job, stage: newStage } : job
     );
+    setJobs(updatedJobs);
+
+    /*
+    const updateJobStage = async () => {
+      const { error } = await supabase
+        .from("jobs")
+        .update({ stage: newStage })
+        .eq("id", jobId);
+
+      if (error) {
+        console.error("Error updating job stage:", error);
+      }
+            updateJobStage();
+    };*/
   };
 
   return (
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <div className="flex space-x-8">
-        {stages.map((stage) => (
-          <Droppable droppableId={stage} key={stage}>
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="w-1/3 p-4 bg-gray-100 rounded-lg shadow-md"
-              >
-                <h3 className="text-xl font-semibold text-center mb-4">
-                  {stage}
-                </h3>
-                <div className="space-y-4">
-                  {/* Filter jobs by stage */}
-                  {jobs
-                    .filter((job) => job.stage === stage)
-                    .map((job, index) => (
-                      <Draggable
-                        key={job.id}
-                        draggableId={job.id.toString()}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            className="bg-white p-4 rounded-lg shadow-sm"
-                          >
-                            <JobCard job={job} onMoveJob={handleMoveJob} />
-                          </div>
-                        )}
-                      </Draggable>
-                    ))}
-                </div>
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        ))}
-      </div>
-    </DragDropContext>
+    <div className="grid grid-cols-3 gap-6  h-[600px] text-black">
+      {stages.map((stage) => (
+        <div key={stage} className="bg-gray-200 p-4 rounded-lg">
+          <h2 className="text-xl font-semibold">{stage}</h2>
+          <div className="mt-4">
+            {jobs
+              .filter((job) => job.stage === stage)
+              .map((job) => (
+                <JobCard key={job.id} job={job} onMoveJob={handleMoveJob} />
+              ))}
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 
