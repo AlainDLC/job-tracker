@@ -1,5 +1,6 @@
 // JobCard.js
 import React from "react";
+import Button from "./Button";
 
 const JobCard = ({ job, onMoveJob }) => {
   const handleDownload = (file) => {
@@ -61,26 +62,23 @@ const JobCard = ({ job, onMoveJob }) => {
         )}
       </p>
 
-      <div className="mt-4 space-x-2">
-        <button
-          onClick={() => onMoveJob(job.id, "Applied")}
-          className="bg-blue-500 text-black py-2 px-4 rounded hover:bg-blue-700"
-        >
-          Applied
-        </button>
-        <button
-          onClick={() => onMoveJob(job.id, "Interview")}
-          className="bg-blue-500 text-black py-2 px-4 rounded hover:bg-blue-700"
-        >
-          Interview
-        </button>
-        <button
-          onClick={() => onMoveJob(job.id, "Offer")}
-          className="bg-green-500 text-black py-2 px-4 rounded hover:bg-green-700"
-        >
-          Offer
-        </button>
-      </div>
+      <Button primary onClick={() => onMoveJob(job.id, "Applied")}>
+        {" "}
+        Applied
+      </Button>
+
+      <button
+        onClick={() => onMoveJob(job.id, "Interview")}
+        className="bg-blue-500 text-black py-2 px-4 rounded hover:bg-blue-400"
+      >
+        Interview
+      </button>
+      <button
+        onClick={() => onMoveJob(job.id, "Offer")}
+        className="bg-green-500 text-black py-2 px-4 rounded hover:bg-green-600"
+      >
+        Offer
+      </button>
     </div>
   );
 };

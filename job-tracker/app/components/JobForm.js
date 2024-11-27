@@ -52,7 +52,10 @@ const JobForm = ({ onSubmit }) => {
 
   return (
     <div className="p-4">
-      <form onSubmit={handleSubmit} className="space-y-4 p-4 max-w-lg">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 p-4 max-w-lg text-black"
+      >
         <input
           type="text"
           placeholder="Job Title "
