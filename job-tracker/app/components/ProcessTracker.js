@@ -42,18 +42,40 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
           </div>
 
           {stage === "Interview" && showCalendar && (
-            <>
-              <div className="mt-4 text-left">
-                <h3 className="font-semibold">Select Interview Date:</h3>
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  dateFormat="yyyy-MM-dd"
-                  placeholderText="Calender 😎"
-                  className="w-full p-2 border border-gray-300 rounded text-black"
-                />
-              </div>
-            </>
+            <div className="mt-4 text-left">
+              <h3 className="font-semibold">Select Interview Date:</h3>
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                dateFormat="yyyy-MM-dd"
+                placeholderText="Calender 😎"
+                className="w-full p-2 border border-gray-300 rounded text-black"
+              />
+            </div>
+          )}
+          {stage === "Test" && jobs.some((job) => job.stage === "Test") && (
+            <div className="mt-4 text-left">
+              <h1>
+                Resultat och vilken test man har gjort Lorem Ipsum is simply
+                dummy text of the printing and typesetting industry. Lorem Ipsum
+                has been the industry&#39;s standard dummy text ever since the
+                1500s, when an unknown printer took a galley of type and
+                scrambled it to make a type specimen book. It has survived not
+                only five centuries,
+              </h1>
+            </div>
+          )}
+
+          {stage === "Offer" && jobs.some((job) => job.stage === "Offer") && (
+            <div className="mt-4 text-left">
+              <h1>
+                Förhandling erbjudanden Lorem Ipsum is simply dummy text of the
+                printing and typesetting industry. Lorem Ipsum has been the
+                industry&#39;s standard dummy text ever since the 1500s, when an
+                unknown printer took a galley of type and scrambled it to make a
+                type specimen book. It has survived not only five centuries,
+              </h1>
+            </div>
           )}
         </div>
       ))}
