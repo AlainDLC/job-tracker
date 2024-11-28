@@ -6,18 +6,25 @@ export default function Button({
   primary,
   secondary,
   success,
+  test,
   warning,
   danger,
   outline,
   rounded,
 }) {
   //1st arg:: for all variations.
-  const classes = className("px-3  border", {
-    "bg-blue-500 text-black py-2 px-4 rounded hover:bg-blue-400  ": primary,
-    "border-gray-900 bg-gray-900 text-white": secondary,
-    "border-green-500 bg-green-500 text-white": success,
+  const classes = className("mt-2 py-3 mr-2 w-25 text-center", {
+    "bg-blue-500 text-black py-2 px-4 rounded hover:bg-blue-400 text-white  ":
+      primary,
+    "bg-gray-200 text-black py-2 px-4 rounded hover:bg-gray-300 text-white ":
+      secondary,
+    "bg-green-400 text-black py-2 px-4 rounded hover:bg-green-500 text-white":
+      success,
+    "bg-orange-200 text-black py-2 px-4 rounded hover:bg-orange-300 text-white":
+      test,
     "border-yellow-400 bg-yellow-400 text-white": warning,
-    "border-red-500 bg-red-500 text-white": danger,
+    "bg-red-400 text-black py-2 px-4 rounded hover:bg-red-500 text-white":
+      danger,
     "rounded-full": rounded,
     "bg-white": outline,
     "text-blue-500": outline && primary,

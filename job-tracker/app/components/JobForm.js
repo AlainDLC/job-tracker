@@ -86,11 +86,11 @@ const JobForm = ({ onSubmit }) => {
         <input
           type="file"
           onChange={(e) => setCv(e.target.files[0])}
-          className="w-full p-2 border border-gray-300 rounded  text-black"
+          className="w-full p-2 border border-gray-300 rounded  text-white"
         />
         <button
           type="submit"
-          className="w-full py-2 bg-blue-500 rounded hover:bg-blue-700  text-black"
+          className="w-full py-2 bg-blue-500 rounded hover:bg-blue-700  text-white"
         >
           Add Job
         </button>

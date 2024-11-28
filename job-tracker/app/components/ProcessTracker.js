@@ -2,6 +2,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import JobCard from "./JobCard";
+import Button from "./Button";
 
 const ProcessTracker = ({ stages, jobs, setJobs }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -28,9 +29,9 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
   };
 
   return (
-    <div className="grid grid-cols-3 gap-6 h-[600px] text-black">
+    <div className="grid grid-cols-4 gap-6 h-[600px]  text-black  w-auto">
       {stages.map((stage) => (
-        <div key={stage} className="bg-gray-200 p-4 rounded-lg">
+        <div key={stage} className="bg-gray-100 p-4 rounded-lg">
           <h2 className="text-xl font-semibold">{stage}</h2>
           <div className="mt-4">
             {jobs
@@ -41,16 +42,18 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
           </div>
 
           {stage === "Interview" && showCalendar && (
-            <div className="mt-4">
-              <h3 className="font-semibold">Select Interview Date:</h3>
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                dateFormat="yyyy-MM-dd"
-                placeholderText="Select a date"
-                className="w-full p-2 border border-gray-300 rounded text-black"
-              />
-            </div>
+            <>
+              <div className="mt-4 text-left">
+                <h3 className="font-semibold">Select Interview Date:</h3>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  dateFormat="yyyy-MM-dd"
+                  placeholderText="Calender 😎"
+                  className="w-full p-2 border border-gray-300 rounded text-black"
+                />
+              </div>
+            </>
           )}
         </div>
       ))}

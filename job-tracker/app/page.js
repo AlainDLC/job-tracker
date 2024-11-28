@@ -5,7 +5,7 @@ import ProcessTracker from "./components/ProcessTracker";
 
 const HomePage = () => {
   const [jobs, setJobs] = useState([]); // Holds the list of jobs
-  const [stages, setStages] = useState(["Applied", "Interview", "Offer"]); // The stages of the job
+  const stages = ["Applied", "Interview", "Test", "Offer"]; // The stages of the job
 
   // Add a new job to the list
   const handleAddJob = (job) => {

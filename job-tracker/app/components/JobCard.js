@@ -14,10 +14,10 @@ const JobCard = ({ job, onMoveJob }) => {
   };
   const formattedDate = job.interview_date
     ? new Date(job.interview_date).toLocaleDateString()
-    : null; // Format the interview date if it exists
+    : null;
 
   return (
-    <div className="border border-gray-300 rounded-lg p-4 shadow-md bg-white text-black">
+    <div className="border border-gray-300 rounded-lg p-4 shadow-md  bg-white text-black text-left  w-100 mt-4  ">
       <h3 className="text-lg font-semibold">{job.company_name}</h3>
       <p>
         <strong>Job Title:</strong> {job.job_title}
@@ -42,7 +42,7 @@ const JobCard = ({ job, onMoveJob }) => {
         <strong>Application Date:</strong> {job.application_date}
       </p>
       {formattedDate && (
-        <div className="mt-2">
+        <div className="mt-2 ">
           <strong>Interview Date:</strong> {formattedDate}
         </div>
       )}
@@ -63,22 +63,21 @@ const JobCard = ({ job, onMoveJob }) => {
       </p>
 
       <Button primary onClick={() => onMoveJob(job.id, "Applied")}>
-        {" "}
         Applied
       </Button>
 
-      <button
-        onClick={() => onMoveJob(job.id, "Interview")}
-        className="bg-blue-500 text-black py-2 px-4 rounded hover:bg-blue-400"
-      >
+      <Button secondary onClick={() => onMoveJob(job.id, "Interview")}>
         Interview
-      </button>
-      <button
-        onClick={() => onMoveJob(job.id, "Offer")}
-        className="bg-green-500 text-black py-2 px-4 rounded hover:bg-green-600"
-      >
+      </Button>
+      <Button test onClick={() => onMoveJob(job.id, "Test")}>
+        Test
+      </Button>
+      <Button success onClick={() => onMoveJob(job.id, "Offer")}>
         Offer
-      </button>
+      </Button>
+      <Button danger onClick={() => onMoveJob(job.id, "")}>
+        Delete
+      </Button>
     </div>
   );
 };
