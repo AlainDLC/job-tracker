@@ -2,7 +2,6 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import JobCard from "./JobCard";
-import Button from "./Button";
 
 const ProcessTracker = ({ stages, jobs, setJobs }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -37,7 +36,12 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
             {jobs
               .filter((job) => job.stage === stage)
               .map((job) => (
-                <JobCard key={job.id} job={job} onMoveJob={handleMoveJob} />
+                <JobCard
+                  key={job.id}
+                  job={job}
+                  onMoveJob={handleMoveJob}
+                  selectedDate={selectedDate}
+                />
               ))}
           </div>
 

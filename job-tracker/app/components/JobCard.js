@@ -2,7 +2,7 @@
 import React from "react";
 import Button from "./Button";
 
-const JobCard = ({ job, onMoveJob }) => {
+const JobCard = ({ job, onMoveJob, selectedDate = { selectedDate } }) => {
   const handleDownload = (file) => {
     const fileURL = URL.createObjectURL(file); // Create a URL for the file
     const link = document.createElement("a");
@@ -66,7 +66,16 @@ const JobCard = ({ job, onMoveJob }) => {
         Applied
       </Button>
 
-      <Button secondary onClick={() => onMoveJob(job.id, "Interview")}>
+      <Button
+        secondary
+        onClick={() => onMoveJob(job.id, "Interview")}
+        disabled={!selectedDate} // Knappen är inaktiv om inget datum är valt
+        className={`${
+          !selectedDate
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-700"
+        } text-white px-4 py-2 rounded`}
+      >
         Interview
       </Button>
       <Button test onClick={() => onMoveJob(job.id, "Test")}>

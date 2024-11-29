@@ -14,9 +14,9 @@ export default function Button({
 }) {
   //1st arg:: for all variations.
   const classes = className("mt-2 py-3 mr-2 w-25 text-center", {
-    "bg-blue-500 text-black py-2 px-4 rounded hover:bg-blue-400 text-white  ":
+    "bg-blue-400 text-black py-2 px-4 rounded hover:bg-blue-500 text-white  ":
       primary,
-    "bg-gray-200 text-black py-2 px-4 rounded hover:bg-gray-300 text-white ":
+    "bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400 text-white ":
       secondary,
     "bg-green-400 text-black py-2 px-4 rounded hover:bg-green-500 text-white":
       success,

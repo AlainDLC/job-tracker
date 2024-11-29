@@ -90,7 +90,12 @@ const JobForm = ({ onSubmit }) => {
         />
         <button
           type="submit"
-          className="w-full py-2 bg-blue-500 rounded hover:bg-blue-700  text-white"
+          className={`w-full py-2 rounded text-white ${
+            jobTitle && applicationDate
+              ? "bg-blue-400 hover:bg-blue-500"
+              : "bg-gray-300 cursor-not-allowed"
+          }`}
+          disabled={!jobTitle}
         >
           Add Job
         </button>
