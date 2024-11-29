@@ -19,11 +19,11 @@ const JobCard = ({ job, onMoveJob, selectedDate = { selectedDate } }) => {
   return (
     <div className="border border-gray-300 rounded-lg p-4 shadow-md  bg-white text-black text-left  w-100 mt-4  ">
       <h3 className="text-lg font-semibold">{job.company_name}</h3>
-      <p>
+      <div>
         <strong>Job Title:</strong> {job.job_title}
-      </p>
+      </div>
       {job.company_link && (
-        <p>
+        <div>
           <strong>Company Website:</strong>{" "}
           <a
             href={job.company_link}
@@ -33,23 +33,23 @@ const JobCard = ({ job, onMoveJob, selectedDate = { selectedDate } }) => {
           >
             {job.company_link}
           </a>
-        </p>
+        </div>
       )}
-      <p>
+      <div>
         <strong>Stage:</strong> {job.stage}
-      </p>
-      <p>
+      </div>
+      <div>
         <strong>Application Date:</strong> {job.application_date}
-      </p>
+      </div>
       {formattedDate && (
         <div className="mt-2 ">
           <strong>Interview Date:</strong> {formattedDate}
         </div>
       )}
-      <p>
+      <div>
         {job.cv ? (
           <div>
-            <p>Cv</p>
+            <div>Cv</div>
             <button
               onClick={() => handleDownload(job.cv)}
               className="text-blue-500 underline ml-2"
@@ -60,7 +60,7 @@ const JobCard = ({ job, onMoveJob, selectedDate = { selectedDate } }) => {
         ) : (
           "No CV uploaded"
         )}
-      </p>
+      </div>
 
       <Button primary onClick={() => onMoveJob(job.id, "Applied")}>
         Applied
@@ -78,7 +78,7 @@ const JobCard = ({ job, onMoveJob, selectedDate = { selectedDate } }) => {
       >
         Interview
       </Button>
-      <Button test onClick={() => onMoveJob(job.id, "Test")}>
+      <Button test onClick={() => onMoveJob(job.id, "Tech Test")}>
         Test
       </Button>
       <Button success onClick={() => onMoveJob(job.id, "Offer")}>
