@@ -1,8 +1,14 @@
 // JobCard.js
 import React from "react";
 import Button from "./Button";
+import Link from "next/link";
 
-const JobCard = ({ job, onMoveJob, selectedDate = { selectedDate } }) => {
+const JobCard = ({
+  job,
+  onMoveJob,
+  selectedDate = { selectedDate },
+  techTestNotes = {},
+}) => {
   const handleDownload = (file) => {
     const fileURL = URL.createObjectURL(file); // Create a URL for the file
     const link = document.createElement("a");
@@ -16,6 +22,8 @@ const JobCard = ({ job, onMoveJob, selectedDate = { selectedDate } }) => {
     ? new Date(job.interview_date).toLocaleDateString()
     : null;
 
+  const techTestNote = techTestNotes[job.id];
+
   return (
     <div className="border border-gray-300 rounded-lg p-4 shadow-md  bg-white text-black text-left  w-100 mt-4  ">
       <h3 className="text-lg font-semibold">{job.company_name}</h3>
@@ -25,14 +33,14 @@ const JobCard = ({ job, onMoveJob, selectedDate = { selectedDate } }) => {
       {job.company_link && (
         <div>
           <strong>Company Website:</strong>{" "}
-          <a
+          <Link
             href={job.company_link}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline"
           >
             {job.company_link}
-          </a>
+          </Link>
         </div>
       )}
       <div>
@@ -61,7 +69,13 @@ const JobCard = ({ job, onMoveJob, selectedDate = { selectedDate } }) => {
           "No CV uploaded"
         )}
       </div>
-
+      <div>
+        {job.stage === "Tech Test" && techTestNote && (
+          <div className="mt-2">
+            <strong>Tech Test Notes:</strong> {techTestNote}
+          </div>
+        )}
+      </div>
       <Button primary onClick={() => onMoveJob(job.id, "Applied")}>
         Applied
       </Button>
