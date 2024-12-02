@@ -21,6 +21,9 @@ const JobCard = ({
   const formattedDate = job.interview_date
     ? new Date(job.interview_date).toLocaleDateString()
     : null;
+  const formattedTechTestDate = job.interview_tech
+    ? new Date(job.interview_tech).toLocaleDateString()
+    : null;
 
   const techTestNote = techTestNotes[job.id];
 
@@ -52,6 +55,16 @@ const JobCard = ({
       {formattedDate && (
         <div className="mt-2 ">
           <strong>Interview Date:</strong> {formattedDate}
+        </div>
+      )}
+      {job.stage === "Tech Test" && formattedTechTestDate && (
+        <div className="mt-2">
+          <strong>Interview Date:</strong> {formattedTechTestDate}
+        </div>
+      )}
+      {job.stage === "Offer" && formattedTechTestDate && (
+        <div className="mt-2">
+          <strong>Interview Date:</strong> {formattedTechTestDate}
         </div>
       )}
       <div>

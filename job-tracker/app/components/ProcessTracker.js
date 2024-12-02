@@ -23,6 +23,8 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
             ...job,
             stage: newStage,
             interview_date: newStage === "Interview" ? selectedDate : null,
+            interview_tech:
+              newStage === "Tech Test" ? selectedDate : job.interview_tech,
             tech_test_notes:
               newStage === "Offer" ? techTestNotes[jobId] : job.tech_test_notes,
             tech_offer:
