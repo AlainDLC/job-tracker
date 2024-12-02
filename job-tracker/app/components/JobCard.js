@@ -75,6 +75,19 @@ const JobCard = ({
             <strong>Tech Test Notes:</strong> {techTestNote}
           </div>
         )}
+        {job.stage === "Offer" && job.tech_test_notes && (
+          <div className="mt-2">
+            <strong>Tech Test Notes:</strong> {job.tech_test_notes}
+          </div>
+        )}
+        {job.stage === "Offer" &&
+          (!job.tech_offer ? (
+            <div className="mt-2">No tech offer available</div>
+          ) : (
+            <div className="mt-2">
+              <strong>Tech Test Offer:</strong> {job.tech_offer}
+            </div>
+          ))}
       </div>
       <Button primary onClick={() => onMoveJob(job.id, "Applied")}>
         Applied

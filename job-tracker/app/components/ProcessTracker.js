@@ -8,6 +8,7 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [techTestNotes, setTechTestNotes] = useState({});
+  const [techOffer, setTechOfer] = useState({});
 
   const handleMoveJob = (jobId, newStage) => {
     if (newStage === "Interview") {
@@ -22,6 +23,10 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
             ...job,
             stage: newStage,
             interview_date: newStage === "Interview" ? selectedDate : null,
+            tech_test_notes:
+              newStage === "Offer" ? techTestNotes[jobId] : job.tech_test_notes,
+            tech_offer:
+              newStage === "Offer" ? techOffer[jobId] : job.tech_offer,
           }
         : job
     );
@@ -32,9 +37,20 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
     setTechTestNotes({ ...techTestNotes, [jobId]: note });
   };
 
+  const handleTechOfferNoteChange = (jobId, offer) => {
+    setTechOfer({ ...techOffer, [jobId]: offer });
+  };
+
   const saveTechTestNote = (jobId) => {
     const updatedJobs = jobs.map((job) =>
       job.id === jobId ? { ...job, tech_test_notes: techTestNotes[jobId] } : job
+    );
+    setJobs(updatedJobs);
+  };
+
+  const saveTechOffer = (jobId) => {
+    const updatedJobs = jobs.map((job) =>
+      job.id === jobId ? { ...job, tech_offer: techOffer[jobId] } : job
     );
     setJobs(updatedJobs);
   };
@@ -85,25 +101,34 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
                       handleTechTestNoteChange(job.id, e.target.value)
                     }
                     placeholder="Enter notes for this job"
-                    className="flex w-full h-full p-2 border border-gray-300 rounded "
+                    className="flex w-full h-full p-2 border border-gray-300 rounded"
                   />
+
                   <Button primary onClick={() => saveTechTestNote(job.id)}>
                     Save Notes
                   </Button>
                 </div>
               ))}
 
-          {stage === "Offer" && jobs.some((job) => job.stage === "Offer") && (
-            <div className="mt-4 text-left">
-              <h1>
-                Förhandling erbjudanden Lorem Ipsum is simply dummy text of the
-                printing and typesetting industry. Lorem Ipsum has been the
-                industry&#39;s standard dummy text ever since the 1500s, when an
-                unknown printer took a galley of type and scrambled it to make a
-                type specimen book. It has survived not only five centuries,
-              </h1>
-            </div>
-          )}
+          {stage === "Offer" &&
+            jobs
+              .filter((job) => job.stage === "Offer")
+              .map((job) => (
+                <div key={job.id} className="mt-4 text-left">
+                  <input
+                    type="text"
+                    value={techOffer[job.id] || ""}
+                    onChange={(e) =>
+                      handleTechOfferNoteChange(job.id, e.target.value)
+                    }
+                    placeholder="Enter offer details"
+                    className="flex w-full p-2 border border-gray-300 rounded"
+                  />
+                  <Button primary onClick={() => saveTechOffer(job.id)}>
+                    Save Offer
+                  </Button>
+                </div>
+              ))}
         </div>
       ))}
     </div>
