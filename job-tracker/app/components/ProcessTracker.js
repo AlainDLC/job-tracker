@@ -58,7 +58,7 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
   };
 
   return (
-    <div className="grid grid-cols-4 gap-6 h-[600px] text-black w-auto">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 h-[600px] text-black w-auto">
       {stages.map((stage) => (
         <div key={stage} className="bg-gray-100 p-4 rounded-lg">
           <h2 className="text-xl font-semibold">{stage}</h2>

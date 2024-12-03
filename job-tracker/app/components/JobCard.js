@@ -102,29 +102,48 @@ const JobCard = ({
             </div>
           ))}
       </div>
-      <Button primary onClick={() => onMoveJob(job.id, "Applied")}>
+      <Button
+        primary
+        onClick={() => onMoveJob(job.id, "Applied")}
+        className="text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4"
+      >
         Applied
       </Button>
 
       <Button
         secondary
         onClick={() => onMoveJob(job.id, "Interview")}
-        disabled={!selectedDate} // Knappen är inaktiv om inget datum är valt
+        disabled={!selectedDate}
         className={`${
           !selectedDate
             ? "bg-gray-400 cursor-not-allowed"
             : "bg-blue-500 hover:bg-blue-700"
-        } text-white px-4 py-2 rounded`}
+        } text-white text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4 rounded`}
       >
         Interview
       </Button>
-      <Button test onClick={() => onMoveJob(job.id, "Tech Test")}>
+
+      <Button
+        test
+        onClick={() => onMoveJob(job.id, "Tech Test")}
+        className="text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4"
+      >
         Test
       </Button>
-      <Button success onClick={() => onMoveJob(job.id, "Offer")}>
+
+      <Button
+        success
+        onClick={() => onMoveJob(job.id, "Offer")}
+        className="text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4"
+      >
         Offer
       </Button>
-      <Button danger onClick={() => onMoveJob(job.id, "")}>
+
+      <Button
+        danger
+        onClick={() => onMoveJob(job.id, "")}
+        className="text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4"
+      >
         Delete
       </Button>
     </div>
