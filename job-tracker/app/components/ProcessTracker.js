@@ -1,14 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import JobCard from "./JobCard";
 import Button from "./Button";
+import supabase from "../supabaseClient";
 
-const ProcessTracker = ({ stages, jobs, setJobs }) => {
+const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [techTestNotes, setTechTestNotes] = useState({});
-  const [techOffer, setTechOfer] = useState({});
+  const [techOffer, setTechOffer] = useState({});
+
+  // Fetch jobs from supabase on component load
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const { data, error } = await supabase.from("jobs").select();
+        if (error) throw error;
+        setJobs(data);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+      }
+    };
+
+    fetchJobs();
+  }, [setJobs]);
 
   const handleMoveJob = (jobId, newStage) => {
     if (newStage === "Interview") {
@@ -40,7 +56,7 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
   };
 
   const handleTechOfferNoteChange = (jobId, offer) => {
-    setTechOfer({ ...techOffer, [jobId]: offer });
+    setTechOffer({ ...techOffer, [jobId]: offer });
   };
 
   const saveTechTestNote = (jobId) => {
@@ -55,6 +71,21 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
       job.id === jobId ? { ...job, tech_offer: techOffer[jobId] } : job
     );
     setJobs(updatedJobs);
+  };
+
+  const handleDeleteJob = async (jobId) => {
+    try {
+      const { error } = await supabase.from("jobs").delete().eq("id", jobId);
+
+      if (error) {
+        console.error("Error deleting job:", error);
+        return;
+      }
+
+      setJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
+    } catch (error) {
+      console.error("Error deleting job:", error);
+    }
   };
 
   return (
@@ -72,6 +103,7 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
                   onMoveJob={handleMoveJob}
                   selectedDate={selectedDate}
                   techTestNotes={techTestNotes}
+                  onDeleteJob={handleDeleteJob}
                 />
               ))}
           </div>
@@ -93,11 +125,10 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
             jobs
               .filter((job) => job.stage === "Tech Test")
               .map((job) => (
-                <div key={job.id} className="mt-4 text-left   ">
+                <div key={job.id} className="mt-4 text-left">
                   <textarea
                     rows="4"
                     cols="50"
-                    type="text"
                     value={techTestNotes[job.id] || ""}
                     onChange={(e) =>
                       handleTechTestNoteChange(job.id, e.target.value)
@@ -105,7 +136,6 @@ const ProcessTracker = ({ stages, jobs, setJobs }) => {
                     placeholder="Enter notes for this job"
                     className="flex w-full h-full p-2 border border-gray-300 rounded"
                   />
-
                   <Button primary onClick={() => saveTechTestNote(job.id)}>
                     Save Notes
                   </Button>

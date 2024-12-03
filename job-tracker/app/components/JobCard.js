@@ -1,23 +1,23 @@
-// JobCard.js
-import React from "react";
-import Button from "./Button";
 import Link from "next/link";
+import Button from "./Button";
 
 const JobCard = ({
   job,
   onMoveJob,
-  selectedDate = { selectedDate },
+  onDeleteJob,
+  selectedDate,
   techTestNotes = {},
 }) => {
   const handleDownload = (file) => {
-    const fileURL = URL.createObjectURL(file); // Create a URL for the file
+    const fileURL = URL.createObjectURL(file); // Skapa en URL för filen
     const link = document.createElement("a");
     link.href = fileURL;
-    link.download = file.name; // Suggest file name when downloading
+    link.download = file.name; // Föreslå filnamn när man laddar ner
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
+
   const formattedDate = job.interview_date
     ? new Date(job.interview_date).toLocaleDateString()
     : null;
@@ -27,9 +27,16 @@ const JobCard = ({
 
   const techTestNote = techTestNotes[job.id];
 
+  const handleDelete = () => {
+    onDeleteJob(job.id); // Anropa onDeleteJob och skicka jobbets ID
+  };
+
   return (
-    <div className="border border-gray-300 rounded-lg p-4 shadow-md  bg-white text-black text-left  w-100 mt-4  ">
-      <h3 className="text-lg font-semibold">{job.company_name}</h3>
+    <div className="border border-gray-300 rounded-lg p-4 shadow-md bg-white text-black text-left w-100 mt-4">
+      <h3 className="text-lg font-semibold">
+        <strong>Company: </strong>
+        {job.company_name}
+      </h3>
       <div>
         <strong>Job Title:</strong> {job.job_title}
       </div>
@@ -53,35 +60,28 @@ const JobCard = ({
         <strong>Application Date:</strong> {job.application_date}
       </div>
       {formattedDate && (
-        <div className="mt-2 ">
+        <div className="mt-2">
           <strong>Interview Date:</strong> {formattedDate}
         </div>
       )}
       {job.stage === "Tech Test" && formattedTechTestDate && (
         <div className="mt-2">
-          <strong>Interview Date:</strong> {formattedTechTestDate}
+          <strong>Tech Test Interview Date:</strong> {formattedTechTestDate}
         </div>
       )}
-      {job.stage === "Offer" && formattedTechTestDate && (
-        <div className="mt-2">
-          <strong>Interview Date:</strong> {formattedTechTestDate}
+      {job.cv ? (
+        <div>
+          <div>Cv</div>
+          <button
+            onClick={() => handleDownload(job.cv)}
+            className="text-blue-500 underline ml-2"
+          >
+            Open <span>{job.cv.name}</span>
+          </button>
         </div>
+      ) : (
+        "No CV uploaded"
       )}
-      <div>
-        {job.cv ? (
-          <div>
-            <div>Cv</div>
-            <button
-              onClick={() => handleDownload(job.cv)}
-              className="text-blue-500 underline ml-2"
-            >
-              Open <span>{job.cv.name}</span>
-            </button>
-          </div>
-        ) : (
-          "No CV uploaded"
-        )}
-      </div>
       <div>
         {job.stage === "Tech Test" && techTestNote && (
           <div className="mt-2">
@@ -141,7 +141,7 @@ const JobCard = ({
 
       <Button
         danger
-        onClick={() => onMoveJob(job.id, "")}
+        onClick={handleDelete} // Use passed down function
         className="text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4"
       >
         Delete
