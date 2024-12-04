@@ -1,5 +1,5 @@
 import { useState } from "react";
-import supabase from "../supabaseClient"; // Se till att du importerar supabase-klienten
+import { supabase } from "../supabase";
 
 const JobForm = ({ onSubmit }) => {
   const [jobTitle, setJobTitle] = useState("");
@@ -27,6 +27,7 @@ const JobForm = ({ onSubmit }) => {
       company_link: companyLink,
       stage: "Applied",
       application_date: applicationDate,
+      cv: sanitizedFileName,
     };
 
     try {
@@ -43,45 +44,34 @@ const JobForm = ({ onSubmit }) => {
         return;
       }
 
+      // Om ett CV finns, ladda upp det till Supabase Storage
+      if (cv) {
+        const bucket = "cvs"; // Se till att du har rätt bucket-namn
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from(bucket)
+          .upload(sanitizedFileName, cv);
+
+        if (uploadError) {
+          console.error("Error uploading file:", uploadError);
+          alert("Error uploading file.");
+          return;
+        }
+        // Uppdatera jobbets CV-fält med den uppladdade filens URL
+        const { data: updatedJob, error: updateError } = await supabase
+          .from("jobs")
+          .update({ cv: uploadData?.Key })
+          .eq("id", data[0].id);
+
+        if (updateError) {
+          console.error("Error updating job with file URL:", updateError);
+          alert("Error updating job with file URL.");
+          return;
+        }
+      }
+
       if (data && data.length > 0) {
         // Skicka tillbaka jobbinformationen till föräldern
         onSubmit(data[0]);
-
-        // Om en CV-fil finns, ladda upp den
-        if (cv) {
-          const { data: uploadData, error: uploadError } =
-            await supabase.storage.from("cvs").upload(sanitizedFileName, cv);
-
-          if (uploadError) {
-            console.error("Error uploading CV:", uploadError.message);
-            return;
-          }
-
-          // Hämta URL för den uppladdade filen
-          const { publicURL, error: urlError } = supabase.storage
-            .from("cvs")
-            .getPublicUrl(sanitizedFileName);
-
-          if (urlError) {
-            console.error("Error fetching CV URL:", urlError.message);
-            return;
-          }
-
-          // Uppdatera jobbinformationen med URL för CV
-          const { data: updatedJobData, error: updateJobError } = await supabase
-            .from("jobs")
-            .update({ cv_url: publicURL })
-            .eq("id", data[0].id)
-            .select();
-
-          if (updateJobError) {
-            console.error(
-              "Error updating job with CV URL:",
-              updateJobError.message
-            );
-            return;
-          }
-        }
       }
 
       // Rensa formuläret

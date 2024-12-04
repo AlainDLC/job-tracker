@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import JobCard from "./JobCard";
 import Button from "./Button";
-import supabase from "../supabaseClient";
+import { supabase } from "../supabase";
 
 const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
   const [selectedDate, setSelectedDate] = useState(null);

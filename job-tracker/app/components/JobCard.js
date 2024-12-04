@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Button from "./Button";
+import { useState } from "react";
+import { supabase } from "../supabase";
 
 const JobCard = ({
   job,
@@ -8,14 +10,22 @@ const JobCard = ({
   selectedDate,
   techTestNotes = {},
 }) => {
-  const handleDownload = (file) => {
-    const fileURL = URL.createObjectURL(file); // Skapa en URL för filen
-    const link = document.createElement("a");
-    link.href = fileURL;
-    link.download = file.name; // Föreslå filnamn när man laddar ner
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const [downloadLink, setDownloadLink] = useState(null);
+
+  const generateDownloadLink = async (filePath) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from("cvs")
+        .createSignedUrl(filePath, 3600);
+
+      if (error) {
+        console.error("Error generating signed URL:", error);
+      } else {
+        setDownloadLink(data.signedUrl);
+      }
+    } catch (err) {
+      console.error("Error generating download link:", err);
+    }
   };
 
   const formattedDate = job.interview_date
@@ -73,11 +83,20 @@ const JobCard = ({
         <div>
           <div>Cv</div>
           <button
-            onClick={() => handleDownload(job.cv)}
+            onClick={() => generateDownloadLink(job.cv)} // Anropa generateDownloadLink för att få URL
             className="text-blue-500 underline ml-2"
           >
-            Open <span>{job.cv.name}</span>
+            Open
           </button>
+          {downloadLink && (
+            <a
+              href={downloadLink} // Om länken är genererad, använd den för nedladdning
+              download
+              className="text-blue-500 underline ml-2"
+            >
+              <span>{job.cv || "Download CV"}</span>
+            </a>
+          )}
         </div>
       ) : (
         "No CV uploaded"
