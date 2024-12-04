@@ -10,7 +10,7 @@ const JobCard = ({
   selectedDate,
   techTestNotes = {},
 }) => {
-  const [downloadLink, setDownloadLink] = useState(null);
+  const [downloadLink, setDownloadLink] = useState(null); // För att hålla den genererade URL:en
 
   const generateDownloadLink = async (filePath) => {
     try {
@@ -80,26 +80,26 @@ const JobCard = ({
         </div>
       )}
       {job.cv ? (
-        <div>
-          <div>Cv</div>
+        <div className="flex items-center space-x-2">
+          <span>Cv:</span>
           <button
-            onClick={() => generateDownloadLink(job.cv)} // Anropa generateDownloadLink för att få URL
-            className="text-blue-500 underline ml-2"
+            onClick={() => generateDownloadLink(job.cv)}
+            className="text-black-500 ml-2 no-underline"
           >
-            Open
+            {job.cv}
           </button>
           {downloadLink && (
             <a
-              href={downloadLink} // Om länken är genererad, använd den för nedladdning
+              href={downloadLink}
               download
-              className="text-blue-500 underline ml-2"
+              className="text-blue-500 ml-2 underline"
             >
-              <span>{job.cv || "Download CV"}</span>
+              Open
             </a>
           )}
         </div>
       ) : (
-        "No CV uploaded"
+        "No CV: uploaded"
       )}
       <div>
         {job.stage === "Tech Test" && techTestNote && (

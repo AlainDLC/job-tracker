@@ -11,7 +11,6 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
   const [techTestNotes, setTechTestNotes] = useState({});
   const [techOffer, setTechOffer] = useState({});
 
-  // Fetch jobs from supabase on component load
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -25,6 +24,8 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
 
     fetchJobs();
   }, [setJobs]);
+
+  // måste köra en insert spara datumet i array
 
   const handleMoveJob = (jobId, newStage) => {
     if (newStage === "Interview") {
@@ -115,7 +116,7 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
                 selected={selectedDate}
                 onChange={(date) => setSelectedDate(date)}
                 dateFormat="yyyy-MM-dd"
-                placeholderText="Calender 😎"
+                placeholderText="Calendar 😎"
                 className="w-full p-2 border border-gray-300 rounded text-black"
               />
             </div>

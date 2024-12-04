@@ -44,7 +44,6 @@ const JobForm = ({ onSubmit }) => {
         return;
       }
 
-      // Om ett CV finns, ladda upp det till Supabase Storage
       if (cv) {
         const bucket = "cvs"; // Se till att du har rätt bucket-namn
         const { data: uploadData, error: uploadError } = await supabase.storage
