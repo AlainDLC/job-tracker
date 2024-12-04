@@ -25,11 +25,32 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
     fetchJobs();
   }, [setJobs]);
 
-  // måste köra en insert spara datumet i array
+  const updateInterviewDate = async (jobId, selectedDate) => {
+    try {
+      // Konvertera datumet till rätt format för databasen
+      const formattedDate = selectedDate.toISOString().split("T")[0]; // format yyyy-mm-dd
+
+      // Uppdatera jobbets intervjudatum i databasen
+      const { data, error } = await supabase
+        .from("jobs")
+        .update({ interview_date: formattedDate })
+        .eq("id", jobId);
+
+      if (error) throw error;
+
+      console.log("Interview date updated successfully", data);
+    } catch (error) {
+      console.error("Error updating interview date:", error);
+    }
+  };
 
   const handleMoveJob = (jobId, newStage) => {
     if (newStage === "Interview") {
       setShowCalendar(true);
+      if (selectedDate) {
+        // Uppdatera intervjudatumet i databasen
+        updateInterviewDate(jobId, selectedDate);
+      }
     } else {
       setShowCalendar(false);
     }
@@ -44,11 +65,11 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
               newStage === "Tech Test" ? selectedDate : job.interview_tech,
             tech_test_notes:
               newStage === "Offer" ? techTestNotes[jobId] : job.tech_test_notes,
-            tech_offer:
-              newStage === "Offer" ? techOffer[jobId] : job.tech_offer,
+            tech_offer: newStage === "Offer" ? selectedDate : job.tech_offer, // Ta bort den dubbla tilldelningen
           }
         : job
     );
+
     setJobs(updatedJobs);
   };
 
