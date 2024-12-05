@@ -33,7 +33,6 @@ const JobForm = ({ onSubmit }) => {
     try {
       setUploading(true);
 
-      // Först lägg till jobbet till Supabase 'jobs' tabell
       const { data, error } = await supabase
         .from("jobs")
         .insert([newJob])
@@ -45,7 +44,7 @@ const JobForm = ({ onSubmit }) => {
       }
 
       if (cv) {
-        const bucket = "cvs"; // Se till att du har rätt bucket-namn
+        const bucket = "cvs";
         const { data: uploadData, error: uploadError } = await supabase.storage
           .from(bucket)
           .upload(sanitizedFileName, cv);
@@ -55,7 +54,7 @@ const JobForm = ({ onSubmit }) => {
           alert("Error uploading file.");
           return;
         }
-        // Uppdatera jobbets CV-fält med den uppladdade filens URL
+
         const { data: updatedJob, error: updateError } = await supabase
           .from("jobs")
           .update({ cv: uploadData?.Key })
@@ -69,11 +68,8 @@ const JobForm = ({ onSubmit }) => {
       }
 
       if (data && data.length > 0) {
-        // Skicka tillbaka jobbinformationen till föräldern
         onSubmit(data[0]);
       }
-
-      // Rensa formuläret
       setJobTitle("");
       setCompanyName("");
       setCompanyLink("");
