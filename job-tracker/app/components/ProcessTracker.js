@@ -94,6 +94,14 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
         .eq("id", jobId);
 
       if (error) throw error;
+      if (newStage === "Interview") {
+        setShowCalendar(true);
+        if (selectedDate) {
+          updateInterviewDate(jobId, selectedDate);
+        }
+      } else {
+        setShowCalendar(false);
+      }
 
       const updatedJobs = jobs.map((job) =>
         job.id === jobId
