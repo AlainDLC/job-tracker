@@ -27,10 +27,8 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
 
   const updateInterviewDate = async (jobId, selectedDate) => {
     try {
-      // Konvertera datumet till rätt format för databasen
-      const formattedDate = selectedDate.toISOString().split("T")[0]; // format yyyy-mm-dd
+      const formattedDate = selectedDate.toISOString().split("T")[0];
 
-      // Uppdatera jobbets intervjudatum i databasen
       const { data, error } = await supabase
         .from("jobs")
         .update({ interview_date: formattedDate })
@@ -62,7 +60,8 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
             interview_date: newStage === "Interview" ? selectedDate : null,
             interview_tech:
               newStage === "Tech Test" ? selectedDate : job.interview_tech,
-
+            interview_date:
+              newStage === "Tech Test" ? selectedDate : job.interview_tech,
             interview_date:
               newStage === "Offer" ? selectedDate : job.interview_tech,
             tech_test_notes:

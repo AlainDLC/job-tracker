@@ -133,36 +133,19 @@ const JobCard = ({
         secondary
         onClick={() => onMoveJob(job.id, "Interview")}
         disabled={!selectedDate}
-        className={`${
-          !selectedDate
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-700"
-        } text-white text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4 rounded`}
       >
         Interview
       </Button>
 
-      <Button
-        test
-        onClick={() => onMoveJob(job.id, "Tech Test")}
-        className="text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4"
-      >
+      <Button test onClick={() => onMoveJob(job.id, "Tech Test")}>
         Test
       </Button>
 
-      <Button
-        success
-        onClick={() => onMoveJob(job.id, "Offer")}
-        className="text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4"
-      >
+      <Button success onClick={() => onMoveJob(job.id, "Offer")}>
         Offer
       </Button>
 
-      <Button
-        danger
-        onClick={handleDelete} // Use passed down function
-        className="text-sm py-1 px-2 sm:text-base sm:py-2 sm:px-4"
-      >
+      <Button danger onClick={handleDelete}>
         Delete
       </Button>
     </div>
