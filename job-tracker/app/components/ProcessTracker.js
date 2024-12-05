@@ -42,35 +42,84 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
     }
   };
 
-  const handleMoveJob = (jobId, newStage) => {
-    if (newStage === "Interview") {
-      setShowCalendar(true);
-      if (selectedDate) {
-        updateInterviewDate(jobId, selectedDate);
-      }
-    } else {
-      setShowCalendar(false);
+  const saveTechTestNote = async (jobId) => {
+    const note = techTestNotes[jobId];
+
+    try {
+      const { data, error } = await supabase
+        .from("jobs")
+        .update({ tech_test_notes: note })
+        .eq("id", jobId);
+
+      if (error) throw error;
+
+      const updatedJobs = jobs.map((job) =>
+        job.id === jobId ? { ...job, tech_test_notes: note } : job
+      );
+      setJobs(updatedJobs);
+
+      console.log("Tech test note saved successfully", data);
+    } catch (error) {
+      console.error("Error saving tech test note:", error);
     }
+  };
 
-    const updatedJobs = jobs.map((job) =>
-      job.id === jobId
-        ? {
-            ...job,
-            stage: newStage,
-            interview_date: newStage === "Interview" ? selectedDate : null,
-            interview_tech:
-              newStage === "Tech Test" ? selectedDate : job.interview_tech,
-            interview_date:
-              newStage === "Tech Test" ? selectedDate : job.interview_tech,
-            interview_date:
-              newStage === "Offer" ? selectedDate : job.interview_tech,
-            tech_test_notes:
-              newStage === "Offer" ? techTestNotes[jobId] : job.tech_test_notes,
-          }
-        : job
-    );
+  const saveTechOffer = async (jobId) => {
+    const offer = techOffer[jobId];
 
-    setJobs(updatedJobs);
+    try {
+      const { data, error } = await supabase
+        .from("jobs")
+        .update({ tech_offer: offer })
+        .eq("id", jobId);
+
+      if (error) throw error;
+
+      const updatedJobs = jobs.map((job) =>
+        job.id === jobId ? { ...job, tech_offer: offer } : job
+      );
+      setJobs(updatedJobs);
+
+      console.log("Tech offer saved successfully", data);
+    } catch (error) {
+      console.error("Error saving tech offer:", error);
+    }
+  };
+
+  const handleMoveJob = async (jobId, newStage) => {
+    try {
+      const { data, error } = await supabase
+        .from("jobs")
+        .update({ stage: newStage })
+        .eq("id", jobId);
+
+      if (error) throw error;
+
+      const updatedJobs = jobs.map((job) =>
+        job.id === jobId
+          ? {
+              ...job,
+              stage: newStage,
+              interview_date:
+                newStage === "Interview" ? selectedDate : job.interview_date,
+              interview_tech:
+                newStage === "Tech Test" ? selectedDate : job.interview_tech,
+              tech_test_notes:
+                newStage === "Offer"
+                  ? techTestNotes[jobId]
+                  : job.tech_test_notes,
+              tech_offer:
+                newStage === "Offer" ? techOffer[jobId] : job.tech_offer,
+            }
+          : job
+      );
+
+      setJobs(updatedJobs);
+
+      console.log("Job stage updated successfully", data);
+    } catch (error) {
+      console.error("Error updating job stage:", error);
+    }
   };
 
   const handleTechTestNoteChange = (jobId, note) => {
@@ -79,20 +128,6 @@ const ProcessTracker = ({ stages, jobs, setJobs, onDeleteJob }) => {
 
   const handleTechOfferNoteChange = (jobId, offer) => {
     setTechOffer({ ...techOffer, [jobId]: offer });
-  };
-
-  const saveTechTestNote = (jobId) => {
-    const updatedJobs = jobs.map((job) =>
-      job.id === jobId ? { ...job, tech_test_notes: techTestNotes[jobId] } : job
-    );
-    setJobs(updatedJobs);
-  };
-
-  const saveTechOffer = (jobId) => {
-    const updatedJobs = jobs.map((job) =>
-      job.id === jobId ? { ...job, tech_offer: techOffer[jobId] } : job
-    );
-    setJobs(updatedJobs);
   };
 
   const handleDeleteJob = async (jobId) => {
